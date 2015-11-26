@@ -1,5 +1,5 @@
 var express = require('express');
-var po = require('../models/Post');
+var po = require('../models/users');
 var router = express.Router();
 
 //게시판 기능
@@ -28,9 +28,10 @@ router.get('/', function(req, res, next) {  // /posts로 들어왔을 경우
   });
 
 });
-router.get('/new', function(req, res, next) { // /poset/new로 들어왔을 경우 글쓰기 페이지 전환
-      res.render('./posts/edit', { post: ''}); //글쓰기 페이지를 렌더링 한다.
+router.get('/new', function(req, res, next) { // 설문 작성 페이지
+      res.render('./servey/servey', { post: ''}); //글쓰기 페이지를 렌더링 한다.
 });
+
 router.post('/', function(req, res, next) { // 글쓰기 완료버튼을 눌렀을 경우 post 요청을 한다.
 
   var post = new po({  //글쓰기에서 넘어온 데이터를 body에서 추출하여 po스크마에 맞게 데이터를 넣어준다.
