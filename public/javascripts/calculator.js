@@ -1,12 +1,13 @@
 $('document').ready(function(){
 
 	$('#optionadd').click(function() {
-		$("active").removeClass("active");
-		$(".optionTbody.active").append($('#optiontemplate').html());
+
+		$(".active").append($('#optiontemplate').html());
 
 	});
 
 	$('#contentadd').click(function() {
+		$(".active").removeClass("active");
 		$(".contentTbody").append($('#contenttemplate').html());
 	});
 
