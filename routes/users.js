@@ -13,21 +13,31 @@ router.get('/', function(req, res, next) {
         return next(err);
       }else{
         console.log(userList);
-        res.render('users/list', {user: userList})
+        res.render('users/list', {user: userList});
       }
-    })
+    });
 });
 
-router.post('/', function(req, res, next) {
+//회원가입 페이지 전환
+router.get('/new', function(req, res, next) {
 
+    res.render('./users/new', { title: 'Express' });
+
+});
+
+//회원가입
+router.post('/new/:name', function(req, res, next) {
+  console.log(req.param('name'));
+  res.json('asd');
+/*
     var newUser = new user({
       email: req.body.email,
       password: req.body.password,
-      name : req.body.name
+      name : req.param('name')
     });
 
     //비밀번호 암호화
-    var password = req.body.password;
+ var password = req.body.password;
     var s = crypto.createHash('sha1');
         s.update(password);
         password = s.digest('hex');
@@ -35,32 +45,22 @@ router.post('/', function(req, res, next) {
     console.log(password);
     console.log(newUser);
 
+
     newUser.save(function(err){
       if(err){
+        console.log(err);
         next(err);
       }else{
-        res.redirect('/signin');
+       res.redirect('/signin');
       }
-    })
-
+    });
+*/
 });
 
-router.get('/new', function(req, res, next) {
-
-    res.render('./users/new', { title: 'Express' });
-
-});
 
 
 router.get('/:id', function(req, res, next) {
-  po.find({},function(err,data){
-    if(err){
-      return next(err);
-    }else{
-      console.log(data);
-      res.render('index', { title: 'Express' });
-    }
-  });
+
 });
 
 router.get('/emailAuth', function(req, res, next) {

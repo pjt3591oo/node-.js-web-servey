@@ -5,14 +5,12 @@ block content
     h1 설문 작성
     p
 
-    table
-    tr
-      td
-        input.form-control(placeholder="제목작성")
-      td
-        button.close.contentdel(type="button" aria-label="Close" ) 양식 제거x
 
-    .optionTbody.active
+    .title
+        input.form-control(placeholder="이 설문은 어떤 설문 인가요??")
+    p
+    p
+
 
     .contentTbody
 
@@ -22,24 +20,42 @@ block content
 
     .contentList
         button#contentadd +양식추가
-        button#contentdel +양식삭제
+        button#contentdel -양식삭제
 
     script#optiontemplate
-      table
-        tr
-          td
-            input(type="checkbox" placeholder="")
-          td
-            input(type="text" placeholder="option")
+      ul
+        li
+          input(type="checkbox" placeholder="")
+          input(type="text" placeholder="option")
 
 
     .save
-    button 저장
+    button.btn.btn-default(type="submit") 저장
+
+    tip
 
     script#contenttemplate
       table.active
         tr
           td
-            input.form-control(placeholder="제목작성")
+            input.form-control(placeholder="질문 제목 작성")
           td
             button.close.contentdel(type="button" aria-label="Close" ) 양식 제거x
+          td
+            select.form-control
+              option 객관식
+              option 주관식
+              option 리커트척도
+
+    script#addContentTip
+      p#addContentTip
+        해당 버튼을 누르면 양식이 추가.
+    script#delContentTip
+      p#delOptionTip
+        해당 버튼을 누르면 가장 하위양식이 삭제 됩니다.
+    script#addOptionTip
+      p.addOptionTip
+        해당 버튼을 누르면 가장 하위 양식에 옵션 추가
+    script#delOptionTip
+      p.delOptionTip
+        해당 버튼을 누르면 가장 하위 옵션 삭제

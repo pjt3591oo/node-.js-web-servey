@@ -25,4 +25,5 @@ router.post('/signin', function(req, res, next) {
     res.redirect('/posts');
 
 });
+
 module.exports = router;

@@ -16,6 +16,7 @@ var router = express.Router();
    delete 삭제 -> 비밀번호 확인
 */
 
+
 router.get('/', function(req, res, next) {  // /posts로 들어왔을 경우
 
   po.find({},function(err,data){ //모든 데이터 ㅊ출
@@ -28,10 +29,11 @@ router.get('/', function(req, res, next) {  // /posts로 들어왔을 경우
   });
 
 });
+
 router.get('/new', function(req, res, next) { // 설문 작성 페이지
       res.render('./servey/servey', { post: ''}); //글쓰기 페이지를 렌더링 한다.
 });
-
+/*
 router.post('/', function(req, res, next) { // 글쓰기 완료버튼을 눌렀을 경우 post 요청을 한다.
 
   var post = new po({  //글쓰기에서 넘어온 데이터를 body에서 추출하여 po스크마에 맞게 데이터를 넣어준다.
@@ -66,7 +68,7 @@ router.get('/:id/edit',function(req,res,next){ //수정 페이지 전환
 });
 
 router.put('/:id',function(req,res,next){ //글 수정
-/* 데이터 추출 부분*/
+
   var id = req.param('id');
   var email =req.body.email;
   var password= req.body.password;
@@ -90,7 +92,7 @@ router.put('/:id',function(req,res,next){ //글 수정
 });
 
 router.delete('/delete/:id',function(req,res,next){ //삭제
-/* 데이터 추출 부분*/
+
   var psw= req.body.psw;
   var id = req.param('id');
 
@@ -151,5 +153,5 @@ router.get('/pswcheck/:id',function(req,res,next){ //비밀번호가 일치한�
   });
 
 });
-
+*/
 module.exports = router;
