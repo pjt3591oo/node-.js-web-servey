@@ -5,9 +5,41 @@ block content
     h1 설문 작성
     p
 
-    input.form-control(placeholder="제목작성")
+    table
+    tr
+      td
+        input.form-control(placeholder="제목작성")
+      td
+        button.close.contentdel(type="button" aria-label="Close" ) 양식 제거x
 
-    p
+    .optionTbody.active
+
+    .contentTbody
 
     .optionList
-      button#add '+'
+      button#optionadd +option
+      button#optiondell -option
+
+    .contentList
+        button#contentadd +양식추가
+        button#contentdel +양식삭제
+
+    script#optiontemplate
+      table
+        tr
+          td
+            input(type="checkbox" placeholder="")
+          td
+            input(type="text" placeholder="option")
+
+
+    .save
+    button 저장
+
+    script#contenttemplate
+      table
+        tr
+          td
+            input.form-control(placeholder="제목작성")
+          td
+            button.close.contentdel(type="button" aria-label="Close" ) 양식 제거x
