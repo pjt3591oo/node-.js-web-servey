@@ -1,7 +1,7 @@
 $('document').ready(function(){
   $('button.btn.btn-primary').click(function(){
 
-    var name = $('.name').val();
+    var name = $('.name').val() ;
     var email = $('.email').val();
     var password = $('.password').val();
     var password_confirmation = $('.password_confirmation').val();
@@ -15,7 +15,11 @@ $('document').ready(function(){
       type:'POST',
       data:{password: password, email:email},
       success:function(data){
-        alert('asd');
+        if(!data){ //회원가입 성공 이메일 인증
+
+        }else{ //회원가입 실패
+          alert(data);
+        }
       }
     })
   });
