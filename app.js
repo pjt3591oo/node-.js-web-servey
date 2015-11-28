@@ -9,6 +9,7 @@ var methodOverride = require('method-override');
 var routes = require('./routes/index');
 var posts = require('./routes/posts');
 var users = require('./routes/users');
+var admin = require('./routes/admin');
 
 var mongoose   = require('mongoose');
 
@@ -39,7 +40,8 @@ app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
 
 app.use('/', routes);
 app.use('/posts', posts);  // 설문 작성부분
-app.use('/users', users);
+app.use('/users', users); //로그인, 회원가입
+app.use('/admin', admin); //관리자 권한 페이지
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -65,7 +67,7 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
+  res.status(err.status || 500).end();
   /*res.render('error', {
     message: err.message,
     error: {}

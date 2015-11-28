@@ -4,9 +4,9 @@ block content
     table
         tr
             td
-                form(method="POST", action="/admin/users/searchid")
+                form(method="POST", action="/admin/users/searchName")
                     h3 ID 검색
-                    input(type="text", name="searchid")
+                    input(type="text", name="searchName")
                     button(type="submit") 검색
             td
             td
@@ -17,12 +17,13 @@ block content
                         option(value="0") 일반유저
                     button(type="submit") 검색
 
-    table
+    table.table
         tr
             td name
             td 권한
             td 권한상승
             td 권한하락
+            td 이메일 인증
             td 유저삭제
 
         for i in user
@@ -39,10 +40,16 @@ block content
                     if i.auth==0
                         form(action="/admin/users/levelup"+"/"+i.id ,method="get")
                             button(type="submit") 권한상승
+
                 td
                     if i.auth==1
                         form(action="/admin/users/leveldown"+"/"+i.id ,method="get")
                             button(type="submit") 권한 하락
+                td
+                    if i.emailAuth==0
+                        p.btn.btn-danger 비인증
+                    else if i.emailAuth==1
+                        p.btn.btn-primary 인증
                 td
                     if i.auth<2
                         form(action="/admin/users/del"+"/"+i.id ,method="get")
