@@ -1,10 +1,8 @@
 $('document').ready(function(){
-
 	var addContentCount=0;
 	var addOptionCount=0;
 	var delContentCount=0;
 	var delOptionCount=0;
-
 
 	$("#optionadd").hover(function(){
 		if(!addOptionCount){
@@ -27,6 +25,7 @@ $('document').ready(function(){
 			addContentCount++;
 		}
 	});
+
 	$("#contentdel").hover(function(){
 		if(!delContentCount){
 			$("tip").append($("#delContentTip").html());
@@ -35,31 +34,31 @@ $('document').ready(function(){
 		}
 	});
 
-	$(document).on("change",".active select.form-control",function(){
-		alert($(this).val());
-	})
 	//설문 유형 선택
-
+	$(document).on("change",".active select.form-control",function(){
+		$('.active').find('.option').remove();
+		optionEdit($(this).val());
+	})
 
 	//option 추가
 	$('#optionadd').click(function() {
 		var type = $(".active select").val();
-
 		optionEdit(type);
-
 		//alert(document.documentElement.innerHTML);
 	});
 
 	// 수정
 	$(document).on('click','.contentiupdate',function(){
 			var data= $(this);
+			$(".active").removeClass("active");
+			data.parent("table").addClass("active");
 
-			$(document).find('.active').removeClass();
-			$(this).parents("").addClass('active');
+			$(this).parents("table").addClass('active');
 	})
 
 	//content 추가
 	$('#contentadd').click(function() {
+		//$(document).find('.active').removeClass();
 		$(".active").removeClass("active");
 		$(".contentTbody").append($('#contenttemplate').html());
 	});
@@ -68,10 +67,7 @@ $('document').ready(function(){
 	$(document).on('click','.contentdel',function(){
 		var data= $(this);
 		data.parents('table').remove();
-
 	})
-
-
 })
 
 function optionEdit(type){
