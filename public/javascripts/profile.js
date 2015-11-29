@@ -18,6 +18,7 @@ $('document').ready(function(){
       success:function(data){
         if(!data){ //변경 성
           alert('비밀번호가 정상적으로 바뀌었습니다.')
+          location.replace("/");
         }else{ //회원가입 실패
           alert(data);
         }

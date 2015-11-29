@@ -17,7 +17,7 @@ var transporter = nodemailer.createTransport({
 
 //회원가입 페이지 전환
 router.get('/new', function(req, res, next) {
-    
+
     res.render('./users/new', { title: 'Express' });
 });
 
@@ -140,13 +140,16 @@ router.get('/:id',loginAuth.loginAuth, function(req, res, next) {
 //프로필 변경 - 비밀번호만 바꾼다.
 router.post('/:email',loginAuth.loginAuth, function(req, res, next) {
   var password = req.body.password;
-
-  Users.update({email:req.param('email')},{password:password},function(err,user){
-    console.log(user);
+  password = cryp(password,null);
+  Users.update({email:req.param('email')},{password:password},function(err){
       if(err){
         return err;
       }else{
-        res.json(0);
+        Users.find({email:req.param('email')},function(err,data){
+          console.log(data);
+          res.json(0);
+        })
+      
       }
   })
 });
