@@ -81,7 +81,7 @@ router.post('/new/:name', function(req, res,next) {
                         res.json(0);
                     }
                 });
-              })
+              });
            }
          });
 
@@ -103,18 +103,19 @@ router.get('/regi/:id', function(req, res,next){
       Users.find({},function(err,data){
         console.log(data);
         res.redirect('/signin');
-      })
+      });
       //res.redirect('/signin');
     }
-  })
-})
+  });
+});
 
 // 이메일 비밀번호 공백 확인
 function checkNewCustom(user, options){
   //console.log(user.email);
   var email = user.email || '0';
   var password = user.password ||'0';
-  if(email==="0" || password==="0") return 0;
+  if(email==="0" || password==="0") {return 0;}
+
   return 1;
 }
 
@@ -134,7 +135,7 @@ router.get('/:id',loginAuth.loginAuth, function(req, res, next) {
       }else{
         res.render('./users/profile',{user:user, currentUser:1});
       }
-  })
+  });
 });
 
 //프로필 변경 - 비밀번호만 바꾼다.
@@ -148,10 +149,10 @@ router.post('/:email',loginAuth.loginAuth, function(req, res, next) {
         Users.find({email:req.param('email')},function(err,data){
           console.log(data);
           res.json(0);
-        })
-      
+        });
+
       }
-  })
+  });
 });
 
 router.get('/emailAuth', function(req, res, next) {

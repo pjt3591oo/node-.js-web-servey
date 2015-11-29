@@ -1,5 +1,5 @@
 $('document').ready(function(){
-
+  alert($('p'));
   $('button.btn.btn-primary').click(function(){
 
     var name = $('.name').text() ;

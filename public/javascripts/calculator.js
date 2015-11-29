@@ -5,6 +5,7 @@ $('document').ready(function(){
 	var delContentCount=0;
 	var delOptionCount=0;
 
+
 	$("#optionadd").hover(function(){
 		if(!addOptionCount){
 			$("tip").append($("#addContentTip").html());
@@ -33,16 +34,29 @@ $('document').ready(function(){
 			delContentCount++;
 		}
 	});
-	$('.active.select').change(function(){
-		alert('test');
+
+	$(document).on("change",".active select.form-control",function(){
+		alert($(this).val());
 	})
 	//설문 유형 선택
 
 
 	//option 추가
 	$('#optionadd').click(function() {
-		$(".active").append($('#optiontemplate').html());
+		var type = $(".active select").val();
+
+		optionEdit(type);
+
+		//alert(document.documentElement.innerHTML);
 	});
+
+	// 수정
+	$(document).on('click','.contentiupdate',function(){
+			var data= $(this);
+
+			$(document).find('.active').removeClass();
+			$(this).parents("").addClass('active');
+	})
 
 	//content 추가
 	$('#contentadd').click(function() {
@@ -50,8 +64,22 @@ $('document').ready(function(){
 		$(".contentTbody").append($('#contenttemplate').html());
 	});
 
-	$('.contentdel').click(function(){
-		alert('asd');
+	//삭제
+	$(document).on('click','.contentdel',function(){
+		var data= $(this);
+		data.parents('table').remove();
+
 	})
 
+
 })
+
+function optionEdit(type){
+	if(type==="객관식"){
+		$(".active").append($('#optiontemplate').html());
+	}else if(type==="주관식"){
+		$(".active").append($('#optiontemplate1').html());
+	}else if(type==="리커트척도"){
+		$(".active").append($('#optiontemplate2').html());
+	}
+}

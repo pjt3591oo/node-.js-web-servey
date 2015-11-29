@@ -7,8 +7,9 @@ exports.loginAuth =function (req,res,next){
   }else{
     next();
   }
-}
+};
+
 exports.test =function (){
   console.log('test');
-}
+};
 //module.exports = loginAuth;

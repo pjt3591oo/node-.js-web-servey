@@ -11,3 +11,11 @@ nav.center {
   text-align: center;
   width: 100%;
 }
+
+ul li{
+  list-style: none;
+}
+
+table.active{
+  background-color: blue;
+}

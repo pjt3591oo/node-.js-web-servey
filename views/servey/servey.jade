@@ -5,7 +5,6 @@ block content
     h1 설문 작성
     p
 
-
     .title
         input.form-control(placeholder="이 설문은 어떤 설문 인가요??")
     p
@@ -28,6 +27,25 @@ block content
           input(type="checkbox" placeholder="")
           input(type="text" placeholder="option")
 
+    script#optiontemplate1
+      ul
+        li
+          input.form-control
+
+    script#optiontemplate2
+      ul
+        li
+          label.checkbox-inline 1
+          input.a(type="checkbox", values="1")
+          label.checkbox-inline 2
+          input.a(type="checkbox", values="2")
+          label.checkbox-inline 3
+          input.a(type="checkbox", values="3")
+          label.checkbox-inline 4
+          input.a(type="checkbox", values="4")
+          label.checkbox-inline 5
+          input.a(type="checkbox", value="5")
+        li
 
     .save
     button.btn.btn-default(type="submit") 저장
@@ -41,6 +59,8 @@ block content
             input.form-control(placeholder="질문 제목 작성")
           td
             button.close.contentdel(type="button" aria-label="Close" ) 양식 제거x
+          td
+            button.close.contentiupdate(type="button" aria-label="Close" ) 수정
           td
             select.form-control
               option 객관식

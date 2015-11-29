@@ -13,7 +13,6 @@ function logincheck(req,res,next){
 }
 /* GET home page. */
 router.get('/',logincheck, function(req, res, next) {
-  console.log(req.cookies)
 
     Users.findOne({email:req.cookies.user},function(err,user){
       if(err){
@@ -61,7 +60,7 @@ function check(req,res,next){
       }
 
     }
-  })
+  });
 }
 
 //암호화
