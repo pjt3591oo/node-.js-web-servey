@@ -6,7 +6,7 @@ block content
     p
 
     .title
-        input.form-control(placeholder="이 설문은 어떤 설문 인가요??")
+        input.form-control#subject(placeholder="이 설문은 어떤 설문 인가요??")
     p
     p
 
@@ -15,25 +15,25 @@ block content
 
     .optionList
       button#optionadd +option
-      button#optiondell -option
 
     .contentList
         button#contentadd +양식추가
-        button#contentdel -양식삭제
 
     script#optiontemplate
-      ul.option
+      ul.option#q1
         li
           input(type="checkbox" placeholder="")
           input(type="text" placeholder="option")
-
+          button.close.opdel(aria-label="Close", aria-hidden="true") x
+        li
     script#optiontemplate1
-      ul.option
+      ul.option#q2
         li
           input.form-control
-
+          button.close.opdel(aria-label="Close", aria-hidden="true") x
+        li
     script#optiontemplate2
-      ul.option
+      ul.option#q3
         li
           label.checkbox-inline 1
           input.a(type="checkbox", values="1")
@@ -45,10 +45,11 @@ block content
           input.a(type="checkbox", values="4")
           label.checkbox-inline 5
           input.a(type="checkbox", value="5")
+          button.close.opdel(aria-label="Close", aria-hidden="true") x
         li
 
     .save
-    button.btn.btn-default(type="submit") 저장
+    button.btn.btn-default.serveySave(type="submit") 저장
 
     tip
 
@@ -70,12 +71,7 @@ block content
     script#addContentTip
       p#addContentTip
         해당 버튼을 누르면 양식이 추가.
-    script#delContentTip
-      p#delOptionTip
-        해당 버튼을 누르면 가장 하위양식이 삭제 됩니다.
+
     script#addOptionTip
       p.addOptionTip
         해당 버튼을 누르면 가장 하위 양식에 옵션 추가
-    script#delOptionTip
-      p.delOptionTip
-        해당 버튼을 누르면 가장 하위 옵션 삭제

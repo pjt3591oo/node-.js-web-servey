@@ -1,9 +1,26 @@
-$('document').ready(function(){
+$('document').ready(function(htmldata){
 	var addContentCount=0;
 	var addOptionCount=0;
 	var delContentCount=0;
 	var delOptionCount=0;
 
+	$(document).on('click','.opdel',function(){
+		$(this).parent('li').remove();
+	})
+
+	$(document).on('click','.serveySave',function(){
+		var subject =$('#subject').val();
+		alert(subject);
+		$.ajax({
+			url:'/posts/new',
+			data:{subject: subject },
+			type:'POST',
+			dataType:'json',
+			success:function(data){
+					//alert(data);
+			}
+		});
+	})
 	$("#optionadd").hover(function(){
 		if(!addOptionCount){
 			$("tip").append($("#addContentTip").html());

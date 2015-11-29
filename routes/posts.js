@@ -33,6 +33,12 @@ router.get('/', function(req, res, next) {  // /posts로 들어왔을 경우
 router.get('/new', function(req, res, next) { // 설문 작성 페이지
       res.render('./servey/servey', { post: '', currentUser:'1'}); //글쓰기 페이지를 렌더링 한다.
 });
+
+router.post('/new', function(req, res, next) { // 설문 작성 페이지
+      console.log(req.body.subject);
+      res.json('a');
+      //res.render('./servey/servey', { post: '', currentUser:'1'}); //글쓰기 페이지를 렌더링 한다.
+});
 /*
 router.post('/', function(req, res, next) { // 글쓰기 완료버튼을 눌렀을 경우 post 요청을 한다.
 
