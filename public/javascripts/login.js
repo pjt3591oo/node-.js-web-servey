@@ -13,7 +13,7 @@ $('document').ready(function(){
         if(data){
           alert(data);
         }else{ //로그인 성공
-          $(location).attr('href','/posts');
+          $(location).attr('href','/');
         }
       }
     });

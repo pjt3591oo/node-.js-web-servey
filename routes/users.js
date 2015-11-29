@@ -3,6 +3,7 @@ var router = express.Router();
 var Users = require('../models/users');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
+var loginAuth = require('../routes/auth/loginAuth');
 
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -16,6 +17,7 @@ var transporter = nodemailer.createTransport({
 
 //회원가입 페이지 전환
 router.get('/new', function(req, res, next) {
+    
     res.render('./users/new', { title: 'Express' });
 });
 
@@ -73,9 +75,10 @@ router.post('/new/:name', function(req, res,next) {
                 transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {
                         console.log(error);
+                        return next(error);
                     } else {
                         console.log('Message sent: ' + info.response);
-                        res.redirect('/signin');
+                        res.json(0);
                     }
                 });
               })
@@ -123,8 +126,29 @@ function cryp(data, options){
         return data;
 }
 
-router.get('/:id', function(req, res, next) {
+//프로필 페이지 띄우기
+router.get('/:id',loginAuth.loginAuth, function(req, res, next) {
+  Users.findOne({_id:req.param('id')},function(err,user){
+      if(err){
+        return err;
+      }else{
+        res.render('./users/profile',{user:user, currentUser:1});
+      }
+  })
+});
 
+//프로필 변경 - 비밀번호만 바꾼다.
+router.post('/:email',loginAuth.loginAuth, function(req, res, next) {
+  var password = req.body.password;
+
+  Users.update({email:req.param('email')},{password:password},function(err,user){
+    console.log(user);
+      if(err){
+        return err;
+      }else{
+        res.json(0);
+      }
+  })
 });
 
 router.get('/emailAuth', function(req, res, next) {

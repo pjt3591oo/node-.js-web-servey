@@ -24,14 +24,14 @@ router.get('/', function(req, res, next) {  // /posts로 들어왔을 경우
       return next(err); //에러났을경우 에러 핸들러로 next시킴
     }else{
       var pagination={ "numPosts" :data.length}; //data(게시글 수)
-      res.render('./posts/index', { posts: data,  pagination : pagination }); //게시글의 데이터와 갯수를 랜더링한다.
+      res.render('./posts/index', { posts: data,  pagination : pagination, currentUser:'1' }); //게시글의 데이터와 갯수를 랜더링한다.
     }
   });
 
 });
 
 router.get('/new', function(req, res, next) { // 설문 작성 페이지
-      res.render('./servey/servey', { post: ''}); //글쓰기 페이지를 렌더링 한다.
+      res.render('./servey/servey', { post: '', currentUser:'1'}); //글쓰기 페이지를 렌더링 한다.
 });
 /*
 router.post('/', function(req, res, next) { // 글쓰기 완료버튼을 눌렀을 경우 post 요청을 한다.

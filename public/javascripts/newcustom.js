@@ -16,7 +16,8 @@ $('document').ready(function(){
       data:{password: password, email:email},
       success:function(data){
         if(!data){ //회원가입 성공 이메일 인증
-
+          alert('회원가입이 되셨습니다. 이메일 인증을 한후 로그인을 하세요');
+          location.replace("/");
         }else{ //회원가입 실패
           alert(data);
         }

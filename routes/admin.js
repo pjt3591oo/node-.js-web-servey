@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
       if(err){
         return next(err);
       }else{
-        res.render('users/list', {user: userList});
+        res.render('users/list', {user: userList, currentUser:'1'});
       }
     });
 });
@@ -24,7 +24,7 @@ router.post('/users/searchName', function(req, res, next) {
       }else{
         var user =[userdata];
         console.log(user);
-        res.render('users/list', {user: user});
+        res.render('users/list', {user: user, currentUser:'1'});
       }
     });
 });
@@ -37,7 +37,7 @@ router.post('/users/searchlv', function(req, res, next) {
       }else{
         console.log(userdata);
         var user =[userdata];
-        res.render('users/list', {user: userdata});
+        res.render('users/list', {user: userdata, currentUser:'1'});
       }
     });
 });

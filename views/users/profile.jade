@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  script(type='text/javascript', src='/javascripts/profile.js')
+  .container
+    h1.page-header #{user.name}님의 Profile
+
+    .form-group
+      label(for='name') Name
+      p.well.name(style='white-space:pre;', name='name')= user.name
+
+    .form-group
+      label(for='email') Email address
+      p.well.email(style='white-space:pre;', name='email')= user.email
+
+    .form-group
+      label(for='password') Password
+      input.form-control.password(type='password', id='password', name='password', placeholder='Password')
+    .form-group
+      label(for='password_confirmation') Password 확인
+      input.form-control.password_confirmation(type='password', id='password_confirmation', name='password_confirmation', placeholder='Password')
+    div.form-actions
+      a.btn.btn-default(href='javascript:window.history.back();') 뒤로
+
+      button.btn.btn-primary.change(type='submit') 프로필 변경
