@@ -35,7 +35,7 @@ router.get('/new', function(req, res, next) { // 설문 작성 페이지
 });
 
 router.post('/new', function(req, res, next) { // 설문 작성 페이지
-      console.log(req.body.subject);
+      console.log(req.body);
       res.json('a');
       //res.render('./servey/servey', { post: '', currentUser:'1'}); //글쓰기 페이지를 렌더링 한다.
 });

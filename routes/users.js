@@ -17,7 +17,7 @@ var transporter = nodemailer.createTransport({
 
 //회원가입 페이지 전환
 router.get('/new', function(req, res, next) {
-
+    //Users.remove({email:'pjt3591oo@naver.com'},function(){});
     res.render('./users/new', { title: 'Express' });
 });
 

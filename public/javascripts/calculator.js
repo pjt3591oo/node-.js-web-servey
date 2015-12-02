@@ -8,12 +8,65 @@ $('document').ready(function(htmldata){
 		$(this).parent('li').remove();
 	})
 
+ //양식 저장하기
 	$(document).on('click','.serveySave',function(){
+		var survey = new Array;
+		var question = new Object();
+
 		var subject =$('#subject').val();
-		alert(subject);
+		var quest = new Array();
+		var type = new Array();
+		var option = new Array();
+
+		$.each($('.tem'),function(index){
+			//alert($(this).find('.option').eq(1).val());
+			quest.push($(this).find('.header').val());
+			type.push($(this).find('select').val());
+			question.header= $(this).find('.header').val();
+
+
+
+			question.type= $(this).find('select').val();
+			//alert(JSON.stringify(question));
+
+			//객관식 json으로 만든다.
+			if($(this).find('select').val() ==="객관식"){
+				var temp = new Array();
+				$.each($('.option'),function(index){
+					temp.push($('.message').eq(index).val());
+
+				})
+				question.option=(JSON.stringify(temp));
+
+				alert(temp);
+				option.push(JSON.stringify(temp));
+			}else if($(this).find('select').val() ==="주관식"){
+				var temp = new Array();
+
+				temp.push($('.message').val());
+
+				option.push(JSON.stringify(temp));
+
+				//question.option=$('.message').eq(index).val();
+			}else if($(this).find('select').val() ==="리커트척도"){
+				var temp = new Array();
+
+				temp.push($('.message').val());
+
+				option.push(JSON.stringify(temp));
+
+				//question.option=$('.message').eq(index).val();
+			}
+
+			survey.push(JSON.stringify(question));
+			alert(JSON.stringify(question));
+			//alert(quest);
+			//alert(type);
+		})
+		//alert($('.tem').find('.header').val());
 		$.ajax({
 			url:'/posts/new',
-			data:{subject: subject },
+			data:{survey:JSON.stringify(survey)},
 			type:'POST',
 			dataType:'json',
 			success:function(data){

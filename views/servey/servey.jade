@@ -20,20 +20,20 @@ block content
         button#contentadd +양식추가
 
     script#optiontemplate
-      ul.option#q1
+      ul.option.q1
         li
           input(type="checkbox" placeholder="")
-          input(type="text" placeholder="option")
+          input.message(type="text" placeholder="option")
           button.close.opdel(aria-label="Close", aria-hidden="true") x
         li
     script#optiontemplate1
-      ul.option#q2
+      ul.option.q2
         li
-          input.form-control
+          input.form-control.message
           button.close.opdel(aria-label="Close", aria-hidden="true") x
         li
     script#optiontemplate2
-      ul.option#q3
+      ul.option.q3
         li
           label.checkbox-inline 1
           input.a(type="checkbox", values="1")
@@ -54,10 +54,10 @@ block content
     tip
 
     script#contenttemplate
-      table.active
+      table.active.tem
         tr
           td
-            input.form-control(placeholder="질문 제목 작성")
+            input.form-control.header(placeholder="질문 제목 작성")
           td
             button.close.contentdel(type="button" aria-label="Close" ) 양식 제거x
           td
