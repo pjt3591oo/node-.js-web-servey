@@ -13,7 +13,7 @@ function logincheck(req,res,next){
 }
 /* GET home page. */
 router.get('/',logincheck, function(req, res, next) {
-
+    
     Users.findOne({email:req.cookies.user},function(err,user){
       if(err){
         return next(err);
@@ -33,7 +33,7 @@ router.get('/signout', function(req, res, next) {
 
 router.get('/signin', function(req, res, next) {
 
-    res.render('signin',  { title: 'Express' });
+    res.render('signin',  { title: 'Express', email : req.cookies.email });
 
 });
 
@@ -56,6 +56,7 @@ function check(req,res,next){
         res.json('이메일 인증을 하셔야 됩니다.');
       }else{ //로그인 성공
           res.cookie('user', req.param('email'));
+
           next();
       }
 

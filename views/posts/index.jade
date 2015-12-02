@@ -2,14 +2,14 @@ extends ../layout
 
 block content
   .container
-    h1.page-header List
+    h1.page-header #{email}님의 설문 List
 
     total #{pagination.numPosts} posts
     table.table.table-bordered
       thead
         tr
-          th 이메일
-          th 제목
+          th 작성자
+          th 설문제목
           th 날짜
           th 조회수
           th

@@ -13,60 +13,45 @@ $('document').ready(function(htmldata){
 		var survey = new Array;
 		var question = new Object();
 
-		var subject =$('#subject').val();
-		var quest = new Array();
-		var type = new Array();
-		var option = new Array();
+		var email = $('#user').text();
+
+		var type   = new Array;
+		var header = new Array;
+		var option = new Array;
 
 		$.each($('.tem'),function(index){
-			//alert($(this).find('.option').eq(1).val());
-			quest.push($(this).find('.header').val());
-			type.push($(this).find('select').val());
-			question.header= $(this).find('.header').val();
 
-
-
-			question.type= $(this).find('select').val();
-			//alert(JSON.stringify(question));
+			header.push( $(this).find('.header').val());
+			type.push( $(this).find('select').val());
 
 			//객관식 json으로 만든다.
-			if($(this).find('select').val() ==="객관식"){
-				var temp = new Array();
-				$.each($('.option'),function(index){
-					temp.push($('.message').eq(index).val());
+			var q = $(this).find('select').val();
 
-				})
-				question.option=(JSON.stringify(temp));
+				if(q==="객관식"){
+					var temp = new Array;
 
-				alert(temp);
-				option.push(JSON.stringify(temp));
-			}else if($(this).find('select').val() ==="주관식"){
-				var temp = new Array();
+					$.each($('.tem').eq(index).find('.message'),function(i){
+						temp.push($('.tem').eq(index).find('.message').eq(i).val());
+					});
 
-				temp.push($('.message').val());
+				}else if(q==="주관식"){
+					var temp = new Array;
+					temp.push(" ");
+				}else if(q==="리커트척도"){
+					var temp = new Array;
+					temp.push(" ");
+				}
+				option[index]=JSON.stringify(temp);
+		});
+		question.option = option;
+		question.header = header;
+		question.type = type;
+		survey.push(question);
 
-				option.push(JSON.stringify(temp));
-
-				//question.option=$('.message').eq(index).val();
-			}else if($(this).find('select').val() ==="리커트척도"){
-				var temp = new Array();
-
-				temp.push($('.message').val());
-
-				option.push(JSON.stringify(temp));
-
-				//question.option=$('.message').eq(index).val();
-			}
-
-			survey.push(JSON.stringify(question));
-			alert(JSON.stringify(question));
-			//alert(quest);
-			//alert(type);
-		})
 		//alert($('.tem').find('.header').val());
 		$.ajax({
 			url:'/posts/new',
-			data:{survey:JSON.stringify(survey)},
+			data:{survey:survey, email:email ,subject:$('#subject').val()},
 			type:'POST',
 			dataType:'json',
 			success:function(data){
@@ -74,6 +59,7 @@ $('document').ready(function(htmldata){
 			}
 		});
 	})
+
 	$("#optionadd").hover(function(){
 		if(!addOptionCount){
 			$("tip").append($("#addContentTip").html());
