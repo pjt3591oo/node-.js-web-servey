@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 var schema = new Schema({
     surveyId :{type:String},
     subject:{type:String},
+    type:{type:String},
     createdAt: {type: Date, default: Date.now}
 }, {
     toJSON: { virtuals: true },

@@ -13,7 +13,7 @@ function logincheck(req,res,next){
 }
 /* GET home page. */
 router.get('/',logincheck, function(req, res, next) {
-    
+
     Users.findOne({email:req.cookies.user},function(err,user){
       if(err){
         return next(err);

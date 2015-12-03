@@ -26,20 +26,82 @@ router.get('/new', function(req, res, next) { // 설문 작성 페이지
 });
 
 router.post('/new', function(req, res, next) { // 설문 작성 페이지
-      console.log(req.body.email);
+      var head=heads(req.body); //각 양식 제목 추출
+      var option = options(req.body); // 각 양식의 옵션들 추출
+      var type = types(req.body);
       console.log(req.body);
+      console.log(head);
+      console.log(type);
+      console.log(option);
       var survey = new Surveys({
-        email:req.body.email,
-        head: req.body.head
+        email : req.body.email,
+        subject : req.body.subject
       });
 
+      survey.save(function(err){
+        if(err){
+          return next(err);
+        }else{
 
-
-      survey.save(function(err,data){
-
+        }
       });
-      res.json('a');
-      //res.render('./servey/servey', { post: '', currentUser:'1'}); //글쓰기 페이지를 렌더링 한다.
+
 });
+function heads(body){
+  var array = new Array;
+  for(var i in body){
 
+    for(var j in body[i]){
+      if(i==="he[]"){
+        array.push(body[i][j]);
+      }
+    }
+  }
+  return array;
+}
+function options(body){
+  var array = new Array(new Array(), new Array());
+  var count=0;
+
+  for(var i in body){
+
+    for(var j in body[i]){
+      if(i==="op[]"){
+        array[count][j]=body[i][j];
+      }
+    }
+    count++;
+  }
+
+  return array;
+}
+function types(body){
+  var array = new Array;
+  for(var i in body){
+
+    for(var j in body[i]){
+      if(i==="type[]"){
+        array.push(body[i][j]);
+      }
+    }
+  }
+  return array;
+}
+
+/*
+for (var i in a){
+  if(i==="type[]" || i==="op[]" || i ==="he[]"){
+    for(var j in a[i]){
+      if(i==="type[]"){
+
+      }else if(i==="op[]"){
+
+
+      }else if(i==="he[]"){
+
+      }
+      console.log(a[i][j]);
+    }
+  }
+}*/
 module.exports = router;

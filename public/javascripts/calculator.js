@@ -11,7 +11,6 @@ $('document').ready(function(htmldata){
  //양식 저장하기
 	$(document).on('click','.serveySave',function(){
 		var survey = new Array;
-		var question = new Object();
 
 		var email = $('#user').text();
 
@@ -42,20 +41,26 @@ $('document').ready(function(htmldata){
 					temp.push(" ");
 				}
 				option[index]=JSON.stringify(temp);
+
 		});
-		question.option = option;
-		question.header = header;
-		question.type = type;
+
+
+		question = new Object({
+			option : option,
+			header : header,
+			type : type
+		})
 		survey.push(question);
 
-		//alert($('.tem').find('.header').val());
+
+
 		$.ajax({
 			url:'/posts/new',
-			data:{survey:survey, email:email ,subject:$('#subject').val()},
+			data:{type:question.type, op:question.option, he:question.header, email:email ,subject:$('#subject').val()},
 			type:'POST',
 			dataType:'json',
 			success:function(data){
-					//alert(data);
+				alert(ARdata);
 			}
 		});
 	})
