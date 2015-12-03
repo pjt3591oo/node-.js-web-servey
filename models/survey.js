@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 var schema = new Schema({
     name: {type: String},
     email: {type: String},
-    head: {type: String, required: true, unique: false}, //설문제목
+    subject: {type: String, required: true, unique: false}, //설문제목
     read:{type:String, default:'0'},
     createdAt: {type: Date, default: Date.now}
 }, {

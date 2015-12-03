@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var schema = new Schema({
     surveyId :{type:String},
-    subject:{type:String},
+    head:{type:String},
     type:{type:String},
     createdAt: {type: Date, default: Date.now}
 }, {

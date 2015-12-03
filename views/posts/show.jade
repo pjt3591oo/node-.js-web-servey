@@ -2,13 +2,39 @@ extends ../layout
 
 block content
   .container
-    h1.page-header= post.title
+    h1.page-header #{survey[0].subject}
     p
-    b by #{post.email}
 
-    span at #{moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+    b by #{survey[0].email}
+    .a span at #{moment(survey[0].createdAt).format('YYYY-MM-DD HH:mm:ss')}
 
-    p 조회수 #{post.read}
-    p.well(style='white-space:pre;')= post.content
 
-    a.btn.btn-default(href='/posts') 목록
+    - for (var d in question)
+      ul
+        p.well(style='white-space:pre;') #{question[d].head}
+        - for (var i in op[d])
+          li
+            if question[d].type ==="객관식"
+              label #{op[d][i].option}
+              input(type="checkbox")
+
+            else if question[d].type ==="주관식"
+              textarea.form-control(rows="3")
+
+            else if question[d].type ==="리커트척도"
+              label.checkbox-inline 1
+              input.a(type="checkbox", values="1")
+              label.checkbox-inline 2
+              input.a(type="checkbox", values="2")
+              label.checkbox-inline 3
+              input.a(type="checkbox", values="3")
+              label.checkbox-inline 4
+              input.a(type="checkbox", values="4")
+              label.checkbox-inline 5
+              input.a(type="checkbox", value="5")
+
+
+
+
+    p
+    a.btn.btn-default(href='/posts') 제출

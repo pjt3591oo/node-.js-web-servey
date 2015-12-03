@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 var schema = new Schema({
     name: {type: String},
     email: {type: String, required: true, index: true, unique: true, trim: true},
-    password: {type: String, required: true, unique: false},
+    password: {type: String, required: true},
     auth: { type:String, default:0}, //권한
     emailAuth: { type:String, default:0}, //이메일
     serveyCount: { type:String, default:0}, //설문 갯수

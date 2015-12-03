@@ -44,7 +44,6 @@ $('document').ready(function(htmldata){
 
 		});
 
-
 		question = new Object({
 			option : option,
 			header : header,
@@ -52,15 +51,15 @@ $('document').ready(function(htmldata){
 		})
 		survey.push(question);
 
-
-
 		$.ajax({
 			url:'/posts/new',
 			data:{type:question.type, op:question.option, he:question.header, email:email ,subject:$('#subject').val()},
 			type:'POST',
 			dataType:'json',
 			success:function(data){
-				alert(ARdata);
+				if(!data){
+					alert('설문작성 완료');
+				}
 			}
 		});
 	})

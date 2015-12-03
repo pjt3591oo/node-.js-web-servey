@@ -12,13 +12,13 @@ block content
           th 설문제목
           th 날짜
           th 조회수
-          th
+
       tbody
         each post in posts
           tr
             td= post.email
             td
-              a(href='/posts/#{post.id}')= post.title
+              a(href='/posts/#{post.id}')= post.subject
             td= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss')
             td= post.read
             td
