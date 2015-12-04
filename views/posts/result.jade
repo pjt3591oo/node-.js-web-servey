@@ -10,7 +10,7 @@ block content
     .a span at #{moment(survey[0].createdAt).format('YYYY-MM-DD HH:mm:ss')}
 
     - for (var d in question)
-      
+
       table.surveyQuestion(id= question[d]._id, class= question[d].type)
         -var sum=0;
           p.well(style='white-space:pre;') #{question[d].head}
@@ -18,12 +18,14 @@ block content
             if question[d].type ==="객관식"
               - var index = an[d][i].answer
               tr
-                td #{op[d][index].option}
+                td(data-id = an[d][i].answer)
+                  #{op[d][index].option}
 
                   if (an[d].length-1<=i)
                     tr
                       td
-                        canvas#myCanvas
+                        .draw
+                          canvas#myCanvas(height= i*70)
             else if question[d].type ==="주관식"
               p
                 결과 #{parseInt(i)+1} : #{an[d][i].answer}
