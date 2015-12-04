@@ -2,11 +2,16 @@ var express = require('express');
 var router = express.Router();
 var crypto= require('crypto');
 var Users = require('../models/users');
+var Surveys = require('../models/survey');
+var Questions = require('../models/question');
+var Options = require('../models/option');
+var Answers = require('../models/answer');
 
+var LoopNext = require('loopnext');
 function logincheck(req,res,next){
 
   if(!req.cookies.user){
-    res.render('index', { title: 'Express'});
+    res.render('index', { title: 'Express',currentUser:req.cookies.user});
   }else{
     next();
   }
@@ -22,7 +27,6 @@ router.get('/',logincheck, function(req, res, next) {
 
       }
     });
-
 });
 
 
@@ -62,6 +66,142 @@ function check(req,res,next){
 
     }
   });
+}
+
+router.get('/views/:id', function(req, res, next) { // 설문지 보기
+
+  Surveys.find({_id:req.param('id')},function(err,survey){
+    console.log(survey[0]._id);
+    Questions.find({surveyId:survey[0]._id},function(err,question){
+
+      result(req,survey,question,res, 'surveyview');
+
+    });
+  });
+});
+
+router.post('/submit/:id', function(req, res, next) { // 설문지 제출 하기
+  var questionId = decompositionsId(req.body);
+    var type= types(req.body);
+    var answer =  decompositionsAnswer(req.body);
+    console.log(type);
+    console.log(questionId);
+    console.log(answer);
+
+    var loop = new LoopNext();
+    var count=0;
+    loop.syncLoop(questionId.length, function(n){
+      answerResult(req,questionId[count], answer[count],next);
+      count++;
+      n.next();
+    });
+
+
+});
+
+function serveyview(req,res,survey, op, question){
+  console.log('rrr');
+  console.log(op);
+  console.log(question);
+  res.render('./posts/show',{survey:survey, question:question, op:op,currentUser:req.cookies.user});
+}
+
+function resultview(req,res,survey, an,op, question){
+  console.log('======'+op+'===');
+  res.render('./posts/result',{survey:survey, question:question,op:op, an:an,currentUser:req.cookies.user});
+}
+
+
+function result(req,survey, question,res, viewType){
+  var loop = new LoopNext();
+  var count=0;
+  var op = new Array();
+  var an = new Array();
+  loop.syncLoop(question.length, function(n){
+    console.log(question[count]._id);
+    if("surveyview"===viewType){
+      Options.find({questionId:question[count]._id},function(err,option){
+        console.log('asd');
+        console.log(option);
+        op.push(option);
+        count++;
+        if(count>=question.length){
+            serveyview(req, res,survey, op, question)
+        }
+        n.next();
+      });
+    }else if("resultview"===viewType){
+      Options.find({questionId:question[count]._id},function(err,option){
+        console.log(option);
+        Answers.find({questionId:question[count]._id},function(err,answer){
+          console.log('asd');
+          console.log(answer);
+          an.push(answer);
+          op.push(option);
+          count++;
+          if(count>=question.length){
+              resultview(req,res,survey, an,op, question)
+          }
+          n.next();
+        });
+      });
+    }
+  })
+}
+
+function types(body){
+  var array = new Array();
+  for(var i in body){
+
+    for(var j in body[i]){
+      if(i==="type[]"){
+        array.push(body[i][j]);
+      }
+    }
+  }
+  return array;
+}
+
+function answerResult(questionId, answer,next){
+  var an = new Answers({
+    questionId: questionId,
+    answer: answer
+  })
+  an.save(function(err){
+    if(err){
+      console.log(err);
+    }else{
+      console.log(an);
+    }
+  })
+}
+
+
+function decompositionsId(body){
+  var array = new Array();
+  for(var i in body){
+
+    for(var j in body[i]){
+      if(i==="questionId[]"){
+        array.push(body[i][j]);
+      }
+    }
+  }
+  return array;
+}
+
+
+function decompositionsAnswer(body){
+  var array = new Array();
+  for(var i in body){
+
+    for(var j in body[i]){
+      if(i==="answers[]"){
+        array.push(body[i][j]);
+      }
+    }
+  }
+  return array;
 }
 
 //암호화

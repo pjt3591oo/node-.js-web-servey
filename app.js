@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
 app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
 
-app.use('/', routes);
+app.use('/', routes); //로그인 , 회원가입, 설문하기
 app.use('/posts',loginAuth.loginAuth, posts);  // 설문 작성부분
 app.use('/users', users); //로그인, 회원가입
 app.use('/admin',loginAuth.loginAuth, admin); //관리자 권한 페이지

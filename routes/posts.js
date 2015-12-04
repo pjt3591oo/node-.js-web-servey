@@ -10,7 +10,7 @@ var router = express.Router();
 
 router.get('/', function(req, res, next) {  // /posts로 들어왔을 경우
   //email:req.cookies.user
-    Users.remove(function(){});
+    console.log('asd');
     Surveys.find({},function(err,data){ //쿠키에 맞는 유저의 설문만 추출해서 보여준다.
       if(err){
         return next(err); //에러났을경우 에러 핸들러로 next시킴
@@ -20,44 +20,12 @@ router.get('/', function(req, res, next) {  // /posts로 들어왔을 경우
         res.render('./posts/index', { posts: data, email : req.cookies.user,  pagination : pagination, currentUser:'1' }); //게시글의 데이터와 갯수를 랜더링한다.
       }
     });
-
 });
+
 
 router.get('/new', function(req, res, next) { // 설문 작성 페이지
 
       res.render('./servey/servey', { post: '', currentUser:'1', email:req.cookies.user});
-});
-
-router.get('/:id', function(req, res, next) { // 설문지 보기
-
-  Surveys.find({_id:req.param('id')},function(err,survey){
-    console.log(survey[0]._id);
-    Questions.find({surveyId:survey[0]._id},function(err,question){
-
-      result(survey,question,res, 'surveyview');
-
-    });
-  });
-});
-
-router.post('/submit/:id', function(req, res, next) { // 설문지 제출 하기
-    var questionId = decompositionsId(req.body);
-    var type= types(req.body);
-    var answer =  decompositionsAnswer(req.body);
-    console.log(type);
-    console.log(questionId);
-    console.log(answer);
-
-    var loop = new LoopNext();
-    var count=0;
-    loop.syncLoop(questionId.length, function(n){
-
-      answerResult(questionId[count], answer[count]);
-      count++;
-      n.next();
-    });
-
-    res.json('aasdfsd');
 });
 
 router.get('/result/:id', function(req, res, next) { // 결과 보기
@@ -65,7 +33,7 @@ router.get('/result/:id', function(req, res, next) { // 결과 보기
     console.log(survey[0]._id);
     Questions.find({surveyId:survey[0]._id},function(err,question){
 
-      result(survey,question,res,'resultview');
+      result(req,survey,question,res,'resultview');
 
     });
   });
@@ -85,7 +53,7 @@ function answerResult(questionId, answer){
   })
 }
 
-function result(survey, question,res, viewType){
+function result(req,survey, question,res, viewType){
   var loop = new LoopNext();
   var count=0;
   var op = new Array();
@@ -99,7 +67,7 @@ function result(survey, question,res, viewType){
         op.push(option);
         count++;
         if(count>=question.length){
-            serveyview(res,survey, op, question)
+            serveyview(req,res,survey, op, question)
         }
         n.next();
       });
@@ -113,7 +81,7 @@ function result(survey, question,res, viewType){
           op.push(option);
           count++;
           if(count>=question.length){
-              resultview(res,survey, an,op, question)
+              resultview(req,res,survey, an,op, question)
           }
           n.next();
         });
@@ -122,19 +90,16 @@ function result(survey, question,res, viewType){
   })
 }
 
-function serveyview(res,survey, op, question){
+function serveyview(req,res,survey, op, question){
   console.log('rrr');
   console.log(op);
   console.log(question);
-  res.render('./posts/show',{survey:survey, question:question, op:op});
+  res.render('./posts/show',{survey:survey, question:question, op:op,currentUser:req.cookies.user});
 }
 
-function resultview(res,survey, an,op, question){
-
-  //console.log();
-
+function resultview(req,res,survey, an,op, question){
   console.log('======'+op+'===');
-  res.render('./posts/result',{survey:survey, question:question,op:op, an:an});
+  res.render('./posts/result',{survey:survey, question:question,op:op, an:an,currentUser:req.cookies.user});
 }
 
 router.post('/new', function(req, res, next) { // 설문 작성 페이지 전송
@@ -263,31 +228,5 @@ function types(body){
   return array;
 }
 
-function decompositionsId(body){
-  var array = new Array();
-  for(var i in body){
-
-    for(var j in body[i]){
-      if(i==="questionId[]"){
-        array.push(body[i][j]);
-      }
-    }
-  }
-  return array;
-}
-
-
-function decompositionsAnswer(body){
-  var array = new Array();
-  for(var i in body){
-
-    for(var j in body[i]){
-      if(i==="answers[]"){
-        array.push(body[i][j]);
-      }
-    }
-  }
-  return array;
-}
 
 module.exports = router;

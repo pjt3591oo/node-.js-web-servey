@@ -25,7 +25,7 @@ $('document').ready(function(){
     })
 
     $.ajax({
-        url :'/posts/submit/'+surveyId,
+        url :'/submit/'+surveyId,
         data: {questionId:questionId, type: type, answers: answers},
         type:'POST',
   			dataType:'json',

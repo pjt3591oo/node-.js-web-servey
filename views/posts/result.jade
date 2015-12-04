@@ -19,24 +19,23 @@ block content
               - var index = an[d][i].answer
               tr
                 td(data-id = an[d][i].answer)
-                  #{op[d][index].option}
-
                   if (an[d].length-1<=i)
                     tr
                       td
                         .draw
-                          canvas#myCanvas(height= i*70)
+                          canvas#myCanvas(height="300")
             else if question[d].type ==="주관식"
               p
                 결과 #{parseInt(i)+1} : #{an[d][i].answer}
             else if question[d].type ==="리커트척도"
                 - var inT = parseInt(an[d][i].answer);
                 - sum +=inT;
-                p
-                  결과 #{parseInt(i)+1} :  #{inT}
-                if (an[d].length-1<=i)
-                 p
-                  총 합계 : #{sum}
+                tr(data-id= inT)
+                  td
+                    if (an[d].length-1<=i)
+                     p
+                      총 합계 : #{sum}
+                      canvas#myCanvas(height="300")
 
 
 
