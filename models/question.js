@@ -5,6 +5,7 @@ var schema = new Schema({
     surveyId :{type:String},
     head:{type:String},
     type:{type:String},
+    answer:{type:String, default: '0'},
     createdAt: {type: Date, default: Date.now}
 }, {
     toJSON: { virtuals: true },

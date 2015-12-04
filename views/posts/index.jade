@@ -12,7 +12,8 @@ block content
           th 설문제목
           th 날짜
           th 조회수
-
+          th 결과보기
+          th 비고
       tbody
         each post in posts
           tr
@@ -21,6 +22,8 @@ block content
               a(href='/posts/#{post.id}')= post.subject
             td= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss')
             td= post.read
+            td
+              a.btn.btn-xs.btn-default(class='result', data-id= post.id, href='/posts/result/'+post.id) 결과보기
             td
               a.btn.btn-xs.btn-default(class='update', data-id= post.id) 수정
 

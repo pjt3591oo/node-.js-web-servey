@@ -3,12 +3,14 @@ var Users = require('../models/users');
 var Surveys = require('../models/survey');
 var Questions = require('../models/question');
 var Options = require('../models/option');
+var Answers = require('../models/answer');
+
 var LoopNext = require('loopnext');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {  // /posts로 들어왔을 경우
   //email:req.cookies.user
-    
+    Users.remove(function(){});
     Surveys.find({},function(err,data){ //쿠키에 맞는 유저의 설문만 추출해서 보여준다.
       if(err){
         return next(err); //에러났을경우 에러 핸들러로 next시킴
@@ -28,41 +30,111 @@ router.get('/new', function(req, res, next) { // 설문 작성 페이지
 
 router.get('/:id', function(req, res, next) { // 설문지 보기
 
-
   Surveys.find({_id:req.param('id')},function(err,survey){
     console.log(survey[0]._id);
     Questions.find({surveyId:survey[0]._id},function(err,question){
 
-      result(survey,question,res);
+      result(survey,question,res, 'surveyview');
 
     });
   });
 });
 
-function result(survey, question,res){
-  var loop = new LoopNext();
-  var count=0;
-  var op = new Array();
-  loop.syncLoop(question.length, function(n){
-    console.log(question[count]._id);
-    Options.find({questionId:question[count]._id},function(err,option){
-      console.log('asd');
-      console.log(option);
-      op.push(option);
+router.post('/submit/:id', function(req, res, next) { // 설문지 제출 하기
+    var questionId = decompositionsId(req.body);
+    var type= types(req.body);
+    var answer =  decompositionsAnswer(req.body);
+    console.log(type);
+    console.log(questionId);
+    console.log(answer);
+
+    var loop = new LoopNext();
+    var count=0;
+    loop.syncLoop(questionId.length, function(n){
+
+      answerResult(questionId[count], answer[count]);
       count++;
-      if(count>=question.length){
-        view(res,survey, op, question)
-      }
       n.next();
     });
+
+    res.json('aasdfsd');
+});
+
+router.get('/result/:id', function(req, res, next) { // 결과 보기
+  Surveys.find({_id:req.param('id')},function(err,survey){
+    console.log(survey[0]._id);
+    Questions.find({surveyId:survey[0]._id},function(err,question){
+
+      result(survey,question,res,'resultview');
+
+    });
+  });
+});
+
+function answerResult(questionId, answer){
+  var an = new Answers({
+    questionId: questionId,
+    answer: answer
+  })
+  an.save(function(err){
+    if(err){
+      return next(err);
+    }else{
+      console.log(an);
+    }
   })
 }
 
-function view(res,survey, op, question){
+function result(survey, question,res, viewType){
+  var loop = new LoopNext();
+  var count=0;
+  var op = new Array();
+  var an = new Array();
+  loop.syncLoop(question.length, function(n){
+    console.log(question[count]._id);
+    if("surveyview"===viewType){
+      Options.find({questionId:question[count]._id},function(err,option){
+        console.log('asd');
+        console.log(option);
+        op.push(option);
+        count++;
+        if(count>=question.length){
+            serveyview(res,survey, op, question)
+        }
+        n.next();
+      });
+    }else if("resultview"===viewType){
+      Options.find({questionId:question[count]._id},function(err,option){
+        console.log(option);
+        Answers.find({questionId:question[count]._id},function(err,answer){
+          console.log('asd');
+          console.log(answer);
+          an.push(answer);
+          op.push(option);
+          count++;
+          if(count>=question.length){
+              resultview(res,survey, an,op, question)
+          }
+          n.next();
+        });
+      });
+    }
+  })
+}
+
+function serveyview(res,survey, op, question){
   console.log('rrr');
   console.log(op);
   console.log(question);
   res.render('./posts/show',{survey:survey, question:question, op:op});
+}
+
+function resultview(res,survey, an,op, question){
+
+  //console.log();
+
+  console.log('======'+op+'===');
+  res.render('./posts/result',{survey:survey, question:question,op:op, an:an});
 }
 
 router.post('/new', function(req, res, next) { // 설문 작성 페이지 전송
@@ -184,6 +256,33 @@ function types(body){
 
     for(var j in body[i]){
       if(i==="type[]"){
+        array.push(body[i][j]);
+      }
+    }
+  }
+  return array;
+}
+
+function decompositionsId(body){
+  var array = new Array();
+  for(var i in body){
+
+    for(var j in body[i]){
+      if(i==="questionId[]"){
+        array.push(body[i][j]);
+      }
+    }
+  }
+  return array;
+}
+
+
+function decompositionsAnswer(body){
+  var array = new Array();
+  for(var i in body){
+
+    for(var j in body[i]){
+      if(i==="answers[]"){
         array.push(body[i][j]);
       }
     }

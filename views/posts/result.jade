@@ -1,0 +1,42 @@
+extends ../layout
+
+block content
+  script(type='text/javascript', src='/javascripts/result.js')
+  .container
+    h1.page-header #{survey[0].subject} 결과
+    p
+
+    b by #{survey[0].email}
+    .a span at #{moment(survey[0].createdAt).format('YYYY-MM-DD HH:mm:ss')}
+
+    - for (var d in question)
+      
+      table.surveyQuestion(id= question[d]._id, class= question[d].type)
+        -var sum=0;
+          p.well(style='white-space:pre;') #{question[d].head}
+          - for (var i in an[d])
+            if question[d].type ==="객관식"
+              - var index = an[d][i].answer
+              tr
+                td #{op[d][index].option}
+
+                  if (an[d].length-1<=i)
+                    tr
+                      td
+                        canvas#myCanvas
+            else if question[d].type ==="주관식"
+              p
+                결과 #{parseInt(i)+1} : #{an[d][i].answer}
+            else if question[d].type ==="리커트척도"
+                - var inT = parseInt(an[d][i].answer);
+                - sum +=inT;
+                p
+                  결과 #{parseInt(i)+1} :  #{inT}
+                if (an[d].length-1<=i)
+                 p
+                  총 합계 : #{sum}
+
+
+
+
+    a.btn.btn-default.recieve(href="/posts") 목록

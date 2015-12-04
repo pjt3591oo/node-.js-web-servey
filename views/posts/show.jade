@@ -1,6 +1,7 @@
 extends ../layout
 
 block content
+  script(type='text/javascript', src='/javascripts/survey.js')
   .container
     h1.page-header #{survey[0].subject}
     p
@@ -8,33 +9,28 @@ block content
     b by #{survey[0].email}
     .a span at #{moment(survey[0].createdAt).format('YYYY-MM-DD HH:mm:ss')}
 
-
     - for (var d in question)
-      ul
+      table.surveyQuestion(id= question[d]._id)
         p.well(style='white-space:pre;') #{question[d].head}
-        - for (var i in op[d])
-          li
-            if question[d].type ==="객관식"
-              label #{op[d][i].option}
-              input(type="checkbox")
-
-            else if question[d].type ==="주관식"
-              textarea.form-control(rows="3")
-
+        if question[d].type ==="객관식"
+          - for (var i in op[d])
+            tr.sel
+              td
+                input(type="checkbox",name="sel", value= i)
+                label #{op[d][i].option}
+        else
+            if question[d].type ==="주관식"
+              tr.text
+                td
+                  textarea.form-control.text(rows=3,cols=80)
             else if question[d].type ==="리커트척도"
-              label.checkbox-inline 1
-              input.a(type="checkbox", values="1")
-              label.checkbox-inline 2
-              input.a(type="checkbox", values="2")
-              label.checkbox-inline 3
-              input.a(type="checkbox", values="3")
-              label.checkbox-inline 4
-              input.a(type="checkbox", values="4")
-              label.checkbox-inline 5
-              input.a(type="checkbox", value="5")
+                tr.selnum
+                    - for (var i=1 ; i< 6 ; i++)
+                        tr
+                          td
+                            label.checkbox-inline= i
+                            input.a(type="checkbox",name="one", value= i)
 
 
 
-
-    p
-    a.btn.btn-default(href='/posts') 제출
+    a.btn.btn-default.recieve(id= survey[0]._id) 제출
