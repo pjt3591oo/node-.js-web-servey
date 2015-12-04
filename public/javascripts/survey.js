@@ -20,8 +20,6 @@ $('document').ready(function(){
         var answer=$('.surveyQuestion').eq(index).find("tr input[type='checkbox']:checked").val();
         answers.push(answer);
       }
-
-
     })
 
     $.ajax({

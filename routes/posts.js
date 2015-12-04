@@ -43,21 +43,21 @@ function answerResult(questionId, answer){
   var an = new Answers({
     questionId: questionId,
     answer: answer
-  })
+  });
   an.save(function(err){
     if(err){
       return next(err);
     }else{
       console.log(an);
     }
-  })
+  });
 }
 
 function result(req,survey, question,res, viewType){
   var loop = new LoopNext();
   var count=0;
-  var op = new Array();
-  var an = new Array();
+  var op = [];
+  var an = [];
   loop.syncLoop(question.length, function(n){
     console.log(question[count]._id);
     if("surveyview"===viewType){
@@ -67,7 +67,7 @@ function result(req,survey, question,res, viewType){
         op.push(option);
         count++;
         if(count>=question.length){
-            serveyview(req,res,survey, op, question)
+            serveyview(req,res,survey, op, question);
         }
         n.next();
       });
@@ -81,13 +81,13 @@ function result(req,survey, question,res, viewType){
           op.push(option);
           count++;
           if(count>=question.length){
-              resultview(req,res,survey, an,op, question)
+              resultview(req,res,survey, an,op, question);
           }
           n.next();
         });
       });
     }
-  })
+  });
 }
 
 function serveyview(req,res,survey, op, question){
@@ -132,8 +132,6 @@ function saveQuestion(surveyId, head, option, type){
   var Loop =new LoopNext();
   var headCount=0;
   Loop.syncLoop(head.length, function (l) {
-
-
     var opCount=0;
     var question = new Questions({
         surveyId : surveyId,
@@ -153,7 +151,7 @@ function saveQuestion(surveyId, head, option, type){
           headCount++;
           l.next();
       }
-    })
+    });
   });
 }
 
@@ -179,11 +177,11 @@ function saveOption(questionId, option, type){
         n.next();
       }
     });
-  })
+  });
 }
 
 function heads(body){
-  var array = new Array();
+  var array =  [];
   for(var i in body){
     for(var j in body[i]){
       if(i==="he[]"){
@@ -216,7 +214,7 @@ function options(body){
 }
 
 function types(body){
-  var array = new Array();
+  var array = [];
   for(var i in body){
 
     for(var j in body[i]){

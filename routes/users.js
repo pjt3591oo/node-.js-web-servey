@@ -68,9 +68,9 @@ router.post('/new/:name', function(req, res,next) {
                     from: '박정태 <pjt3591oo@naver.com>', // sender
                     subject: 'Hello 가입을 축하합니다', // Subject line
                     text: 'Hello 가입을 축하합니다 아래 링크를 누르시면 가입이 됩니다.', // plaintext body
-                    html: '<h1>가입을 축하합니다.</h1>'
-                          +'<a href=http://127.0.0.1:3000/users/regi/'+userEmail._id+'>인증을 하려면 눌러주세요</a>' // html body https://thawing-shore-4680.herokuapp.com
-                          +'<h2>asd</h2>'
+                    html: '<h1>가입을 축하합니다.</h1>'+
+                          '<a href=http://127.0.0.1:3000/users/regi/'+userEmail._id+'>인증을 하려면 눌러주세요</a>'+ // html body https://thawing-shore-4680.herokuapp.com
+                          '<h2>asd</h2>'
                 };
                 transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {

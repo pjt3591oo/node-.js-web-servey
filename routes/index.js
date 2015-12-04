@@ -81,7 +81,7 @@ router.get('/views/:id', function(req, res, next) { // 설문지 보기
 });
 
 router.post('/submit/:id', function(req, res, next) { // 설문지 제출 하기
-  var questionId = decompositionsId(req.body);
+    var questionId = decompositionsId(req.body);
     var type= types(req.body);
     var answer =  decompositionsAnswer(req.body);
     console.log(type);
@@ -91,11 +91,12 @@ router.post('/submit/:id', function(req, res, next) { // 설문지 제출 하기
     var loop = new LoopNext();
     var count=0;
     loop.syncLoop(questionId.length, function(n){
-      answerResult(req,questionId[count], answer[count],next);
+      answerResult(req,questionId[count], answer[count],next)
       count++;
       n.next();
     });
 
+    res.json('0');
 
 });
 
@@ -115,8 +116,8 @@ function resultview(req,res,survey, an,op, question){
 function result(req,survey, question,res, viewType){
   var loop = new LoopNext();
   var count=0;
-  var op = new Array();
-  var an = new Array();
+  var op = [];
+  var an = [];
   loop.syncLoop(question.length, function(n){
     console.log(question[count]._id);
     if("surveyview"===viewType){
@@ -126,7 +127,7 @@ function result(req,survey, question,res, viewType){
         op.push(option);
         count++;
         if(count>=question.length){
-            serveyview(req, res,survey, op, question)
+            serveyview(req, res,survey, op, question);
         }
         n.next();
       });
@@ -140,17 +141,17 @@ function result(req,survey, question,res, viewType){
           op.push(option);
           count++;
           if(count>=question.length){
-              resultview(req,res,survey, an,op, question)
+              resultview(req,res,survey, an,op, question);
           }
           n.next();
         });
       });
     }
-  })
+  });
 }
 
 function types(body){
-  var array = new Array();
+  var array = [];
   for(var i in body){
 
     for(var j in body[i]){
@@ -162,23 +163,23 @@ function types(body){
   return array;
 }
 
-function answerResult(questionId, answer,next){
+function answerResult(req,questionId, answer,next){
   var an = new Answers({
     questionId: questionId,
     answer: answer
-  })
+  });
   an.save(function(err){
     if(err){
-      console.log(err);
+      return next(err);
     }else{
-      console.log(an);
+
     }
-  })
+  });
 }
 
 
 function decompositionsId(body){
-  var array = new Array();
+  var array = [];
   for(var i in body){
 
     for(var j in body[i]){
@@ -192,7 +193,7 @@ function decompositionsId(body){
 
 
 function decompositionsAnswer(body){
-  var array = new Array();
+  var array = [];
   for(var i in body){
 
     for(var j in body[i]){

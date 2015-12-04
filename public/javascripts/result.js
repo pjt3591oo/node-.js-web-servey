@@ -7,9 +7,11 @@ $('document').ready(function(){
     var op= new Array();
     var c = $('.surveyQuestion').eq(index).find('#myCanvas')[0];
 
-    $.each($('.surveyQuestion'),function(index){
-      var temp = $(this);
 
+      var temp = $(this);
+      //chart=[];
+      //rank=[];
+      //num=0;
       $.each($('.surveyQuestion').eq(index).find('tr'),function(ind){
         //객관식 그래프
         if($('.surveyQuestion').eq(index).attr('class')==='surveyQuestion 객관식'){
@@ -37,20 +39,18 @@ $('document').ready(function(){
           }
           rank[num] = (typeof rank[num]==="undefined")?  0: rank[num]++ ;
         }
+
       })
 
+      if($('.surveyQuestion').eq(index).attr('class')==='surveyQuestion 객관식'){
+        chartDraw(chart, index,c,op );
+
+      }else if($('.surveyQuestion').eq(index).attr('class')==='surveyQuestion 리커트척도'){
+
+       graphDraw(rank, index,c);
+      }
+
     })
-
-    if($('.surveyQuestion').eq(index).attr('class')==='surveyQuestion 객관식'){
-      chartDraw(chart, index,c,op );
-
-    }else if($('.surveyQuestion').eq(index).attr('class')==='surveyQuestion 리커트척도'){
-      graphDraw(rank, index,c);
-    }
-    chart=[];
-    rank=[];
-    num=0;
-  })
 
 })
 function graphDraw(Graphs, index,c,op){
@@ -100,11 +100,12 @@ function chartDraw(Graphs, index,c,op){
     ctx.font = "10pt sans-serif";
 
     ctx.fillRect(20+10,60*i,30*Graphs[i],25);
+    var temp = Graphs[i] || 0;
     if(i!=='0'){
-      ctx.fillText(Graphs[i]+'명', 2, 70*i);
+      ctx.fillText(temp+'명', 2, 70*i);
       ctx.fillText(op[i], 2, 70*i+30);
     }else{
-      ctx.fillText(Graphs[i]+'명', 2, 70*i+15);
+      ctx.fillText(temp+'명', 2, 70*i+15);
       ctx.fillText(op[i], 2, 70*i+40);
     }
   }
