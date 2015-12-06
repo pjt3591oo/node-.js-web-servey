@@ -29,7 +29,9 @@ router.get('/new', function(req, res, next) {
   * 이메일 인증
 */
 router.post('/new/:name', function(req, res,next) {
+  console.log('asd');
   var err = checkNewCustom(req.body, null);
+
 
   if(!err){
     res.json('공백이 있습니다.');
@@ -39,7 +41,7 @@ router.post('/new/:name', function(req, res,next) {
     Users.findOne({email:req.body.email}, function(err,data){
 
       if(err){
-        next(err);
+        return next(err);
       }else{
         console.log(data);
         data = data ||"0";

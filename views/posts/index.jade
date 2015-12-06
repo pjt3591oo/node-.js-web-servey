@@ -15,9 +15,12 @@ block content
           th 결과보기
           th 비고
       tbody
+
         each post in posts
           tr
+            if post.email
             td= post.email
+
             td
               a(href='/views/#{post.id}')= post.subject
             td= moment(post.createdAt).format('YYYY-MM-DD HH:mm:ss')

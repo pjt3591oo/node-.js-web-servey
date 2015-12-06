@@ -11,6 +11,7 @@ var routes = require('./routes/index');
 var posts = require('./routes/posts');
 var users = require('./routes/users');
 var admin = require('./routes/admin');
+var video = require('./routes/video');
 var loginAuth = require('./routes/auth/loginAuth');
 var adminAuth = require('./routes/auth/adminAuth');
 var mongoose   = require('mongoose');
@@ -28,7 +29,7 @@ app.locals.moment = require('moment');
 
 // mongodb connect
 // 아래 DB접속 주소는 꼭 자기 것으로 바꾸세요!
-mongoose.connect('mongodb://user:asdasd@ds041394.mongolab.com:41394/nodewp');
+mongoose.connect('mongodb://user:123@ds049651.mongolab.com:49651/pjt3591oo');
 mongoose.connection.on('error', console.log);
 
 // uncomment after placing your favicon in /public
@@ -45,6 +46,7 @@ app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
 app.use('/', routes); //로그인 , 회원가입, 설문하기
 app.use('/posts',loginAuth.loginAuth, posts);  // 설문 작성부분
 app.use('/users', users); //로그인, 회원가입
+app.use('/video', video); //로그인, 회원가입
 app.use('/admin',loginAuth.loginAuth,adminAuth.adminAuth, admin); //관리자 권한 페이지, 로그인, 권한 검사후 접속
 
 // catch 404 and forward to error handler
