@@ -66,8 +66,8 @@ $('document').ready(function(htmldata){
 			dataType:'json',
 			success:function(data){
 				if(data.surveyId){
-					var url = "http://127.0.0.1:3000/posts";
-					var trb =	"http://127.0.0.1:3000/views/"+data.surveyId;
+					var url = "https://thawing-shore-4680.herokuapp.com/posts";
+					var trb =	"https://thawing-shore-4680.herokuapp.com/views/"+data.surveyId;
 					copy_trackback(url,trb);
 					$('.load').hide(function(){});
 					//$(location).attr('href',url);
