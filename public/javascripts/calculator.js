@@ -12,6 +12,11 @@ $('document').ready(function(htmldata){
 		$(this).parent('li').remove();
 	})
 
+	$(document).on('click','.closeCopy',function(){
+		var url = "https://thawing-shore-4680.herokuapp.com/posts";
+		$(location).attr('href',url);
+	})
+
  //양식 저장하기
 	$(document).on('click','.serveySave',function(){
 		$('.load').show();
