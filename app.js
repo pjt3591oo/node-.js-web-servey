@@ -12,6 +12,7 @@ var posts = require('./routes/posts');
 var users = require('./routes/users');
 var admin = require('./routes/admin');
 var loginAuth = require('./routes/auth/loginAuth');
+var adminAuth = require('./routes/auth/adminAuth');
 var mongoose   = require('mongoose');
 
 var app = express();
@@ -44,7 +45,7 @@ app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
 app.use('/', routes); //로그인 , 회원가입, 설문하기
 app.use('/posts',loginAuth.loginAuth, posts);  // 설문 작성부분
 app.use('/users', users); //로그인, 회원가입
-app.use('/admin',loginAuth.loginAuth, admin); //관리자 권한 페이지
+app.use('/admin',loginAuth.loginAuth,adminAuth.adminAuth, admin); //관리자 권한 페이지, 로그인, 권한 검사후 접속
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

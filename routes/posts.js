@@ -39,6 +39,42 @@ router.get('/result/:id', function(req, res, next) { // 결과 보기
   });
 });
 
+router.post('/new', function(req, res, next) { // 설문 작성 페이지 전송
+      var head=heads(req.body); //각 양식 제목 추출
+      var option = options(req.body); // 각 양식의 옵션들 추출
+      var type = types(req.body);
+
+      console.log(option);
+
+      if(!head.length || 2>req.body.questionCount || !req.body.subject){
+          res.json("설문 제목이 비었거나, 설문 양식이 없습니다, 현재 양식 하나를 가지고 설문을 만들경우 버그로 인하여 만들수 없습니다.");
+      }else{
+          var survey = new Surveys({
+            email : req.body.email,
+            subject : req.body.subject || "제목없음!"
+          });
+
+          survey.save(function (err) {
+            if (err) {
+              console.log(err);
+            } else {
+              //console.log(head);
+              saveQuestion(survey.id, head, option, type);
+              res.json({surveyId:survey.id});
+          }
+        });
+      }
+});
+
+router.get('/search/:email',function(req,res,next){
+  console.log();
+  Surveys.find({email:req.param('email')},function(err,data){
+    console.log(data);
+    var pagination={ "numPosts" :data.length};
+    res.render('./posts/index', { posts: data, email : req.param('email'),  pagination : pagination, currentUser:'1' });
+  })
+})
+
 function answerResult(questionId, answer){
   var an = new Answers({
     questionId: questionId,
@@ -90,6 +126,8 @@ function result(req,survey, question,res, viewType){
   });
 }
 
+
+
 function serveyview(req,res,survey, op, question){
   console.log('rrr');
   console.log(op);
@@ -102,32 +140,6 @@ function resultview(req,res,survey, an,op, question){
   res.render('./posts/result',{survey:survey, question:question,op:op, an:an,currentUser:req.cookies.user});
 }
 
-router.post('/new', function(req, res, next) { // 설문 작성 페이지 전송
-      var head=heads(req.body); //각 양식 제목 추출
-      var option = options(req.body); // 각 양식의 옵션들 추출
-      var type = types(req.body);
-
-      console.log(option);
-
-      if(!head.length || 2>req.body.questionCount || !req.body.subject){
-          res.json("설문 제목이 비었거나, 설문 양식이 없습니다, 현재 양식 하나를 가지고 설문을 만들경우 버그로 인하여 만들수 없습니다.");
-      }else{
-          var survey = new Surveys({
-            email : req.body.email,
-            subject : req.body.subject || "제목없음!"
-          });
-
-          survey.save(function (err) {
-            if (err) {
-              console.log(err);
-            } else {
-              //console.log(head);
-              saveQuestion(survey.id, head, option, type);
-              res.json({surveyId:survey.id});
-          }
-        });
-      }
-});
 
 
 function saveQuestion(surveyId, head, option, type){

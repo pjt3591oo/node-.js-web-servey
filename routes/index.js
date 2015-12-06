@@ -19,7 +19,9 @@ function logincheck(req,res,next){
 /* GET home page. */
 router.get('/',logincheck, function(req, res, next) {
 
+
     Users.findOne({email:req.cookies.user},function(err,user){
+
       if(err){
         return next(err);
       }else{
@@ -37,6 +39,27 @@ router.get('/signout', function(req, res, next) {
 
 //로그인 페이지 접속
 router.get('/signin', function(req, res, next) {
+  /*======태스트용 아이디 생성======*/
+
+  /*var test = new Users({
+      name : "test",
+      email : "test@test.com",
+      password : cryp("test",null),
+      auth : 0,
+      emailAuth : 1
+    })
+    Users.findOne({name:"test"},function(err,user){
+      console.log(test);
+    })*/
+
+  /*======태스트용 아이디 생성======*/
+
+  /*게시글 다 지우기*/
+  /*Surveys.remove(function(){});
+  Questions.remove(function(){});
+  Options.remove(function(){});
+  Answers.remove(function(){});*/
+  /*게시글 다 지우기*/
 
     res.render('signin',  { title: 'Express', email : req.cookies.email });
 

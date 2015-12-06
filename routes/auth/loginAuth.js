@@ -1,4 +1,4 @@
-
+var users = require('../../models/users')
 
 exports.loginAuth =function (req,res,next){
 
