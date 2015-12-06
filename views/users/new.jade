@@ -2,6 +2,7 @@ extends ../layout
 
 block content
   script(type='text/javascript', src='/javascripts/newcustom.js')
+  link(rel='stylesheet', href='/stylesheets/newCustomLoding.css')
   .container
     h1.page-header 회원가입
 
@@ -11,14 +12,21 @@ block content
     .form-group
       label(for='email') Email address
       input.form-control.email(type='email', id='email', name='email', placeholder='Email')
-      a.btn.btn-primary.btn-xs(href='/users/emailAutn') 인증발송
     .form-group
       label(for='password') Password
       input.form-control.password(type='password', id='password', name='password', placeholder='Password')
     .form-group
       label(for='password_confirmation') Password 확인
       input.form-control.password_confirmation(type='password', id='password_confirmation', name='password_confirmation', placeholder='Password')
-    div.form-actions
-      a.btn.btn-default(href='javascript:window.history.back();') 뒤로
 
-      button.btn.btn-primary(type='submit') 회원가입
+
+      table
+        tr
+          td
+            div.form-actions
+              a.btn.btn-default(href='javascript:window.history.back();') 뒤로
+          td
+            button.btn.btn-primary.regi(type='submit') 회원가입
+          td
+            .box
+              #load.loader9

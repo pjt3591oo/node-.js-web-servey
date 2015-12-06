@@ -1,6 +1,9 @@
 extends ../layout
 
 block content
+
+  link(rel='stylesheet', href='/stylesheets/surveyloding.css')
+  link(rel='stylesheet', href='/stylesheets/surveypopup.css')
   .container
     h1 설문 작성
     p#user(name="email", value= email) #{email}
@@ -49,9 +52,25 @@ block content
         li
 
     .save
-    button.btn.btn-default.serveySave(type="submit") 저장
+    button.btn.btn-default.serveySave 저장
 
+    .loading-container.load
+      .loading
+        #loading-text
+          loading
+          잠시만 기다려 주세요~
     tip
+
+    .layer
+      a.btn_example
+        #layer1.pop-layer
+          pop-container
+            pop-conts
+              p.ctxt.mb20
+              button.clipBoardCopy 복사
+              button.closeCopy 닫기
+
+
 
     script#contenttemplate
       table.active.tem

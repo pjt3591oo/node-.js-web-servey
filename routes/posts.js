@@ -107,26 +107,28 @@ router.post('/new', function(req, res, next) { // 설문 작성 페이지 전송
       var option = options(req.body); // 각 양식의 옵션들 추출
       var type = types(req.body);
 
-      var survey = new Surveys({
-        email : req.body.email,
-        subject : req.body.subject || "제목없음!"
-      });
+      console.log(option);
 
-      survey.save(function (err) {
-        if (err) {
-          console.log(err);
-        } else {
-          //console.log(head[1]);
-          saveQuestion(survey.id, head, option, type);
-          console.log('asd');
-          end(res);
+      if(!head.length || 2>req.body.questionCount || !req.body.subject){
+          res.json("설문 제목이 비었거나, 설문 양식이 없습니다, 현재 양식 하나를 가지고 설문을 만들경우 버그로 인하여 만들수 없습니다.");
+      }else{
+          var survey = new Surveys({
+            email : req.body.email,
+            subject : req.body.subject || "제목없음!"
+          });
+
+          survey.save(function (err) {
+            if (err) {
+              console.log(err);
+            } else {
+              //console.log(head);
+              saveQuestion(survey.id, head, option, type);
+              res.json({surveyId:survey.id});
+          }
+        });
       }
-    });
 });
 
-function end(res){
-  res.json('');
-}
 
 function saveQuestion(surveyId, head, option, type){
   var Loop =new LoopNext();
@@ -172,7 +174,6 @@ function saveOption(questionId, option, type){
       if(err){
         return next(err);
       }else{
-        //console.log(o);
         count++;
         n.next();
       }
@@ -185,11 +186,12 @@ function heads(body){
   for(var i in body){
     for(var j in body[i]){
       if(i==="he[]"){
+
         array.push(body[i][j]);
       }
     }
   }
-  console.log(array);
+
   return array;
 }
 function options(body){
@@ -206,10 +208,6 @@ function options(body){
     }
     count++;
   }
-
-  //console.log(array.replace(pattern,""));
-
-
   return array;
 }
 

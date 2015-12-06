@@ -1,5 +1,5 @@
 $('document').ready(function(){
-
+  //설문지 결과 제출하기
   $('a.btn.btn-default.recieve').click(function(){
     var answers = new Array();
     var questionId = new Array();

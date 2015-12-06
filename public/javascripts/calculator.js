@@ -1,8 +1,12 @@
 $('document').ready(function(htmldata){
+	$('.layer').hide();
+
 	var addContentCount=0;
 	var addOptionCount=0;
 	var delContentCount=0;
 	var delOptionCount=0;
+
+	$('.load').hide(function(){});
 
 	$(document).on('click','.opdel',function(){
 		$(this).parent('li').remove();
@@ -10,6 +14,8 @@ $('document').ready(function(htmldata){
 
  //양식 저장하기
 	$(document).on('click','.serveySave',function(){
+		$('.load').show();
+		$('button.btn.btn-default.serveySave').hide(function(){});
 		var survey = new Array;
 
 		var email = $('#user').text();
@@ -18,8 +24,10 @@ $('document').ready(function(htmldata){
 		var header = new Array;
 		var option = new Array;
 
-		$.each($('.tem'),function(index){
+		var questionCount =0;
 
+		$.each($('.tem'),function(index){
+			questionCount++;
 			header.push( $(this).find('.header').val());
 			type.push( $(this).find('select').val());
 
@@ -50,18 +58,40 @@ $('document').ready(function(htmldata){
 			type : type
 		})
 		survey.push(question);
-
+		alert(questionCount);
 		$.ajax({
 			url:'/posts/new',
-			data:{type:question.type, op:question.option, he:question.header, email:email ,subject:$('#subject').val()},
+			data:{type:question.type, op:question.option, he:question.header, email:email ,subject:$('#subject').val(),questionCount:questionCount},
 			type:'POST',
 			dataType:'json',
 			success:function(data){
-				if(!data){
-					alert('설문작성 완료');
+				if(data.surveyId){
+					var url = "http://127.0.0.1:3000/posts";
+					var trb =	"http://127.0.0.1:3000/views/"+data.surveyId;
+					copy_trackback(url,trb);
+					$('.load').hide(function(){});
+					//$(location).attr('href',url);
+				}else{
+					alert(data);
+					$('.load').hide(function(){
+						$('button.btn.btn-default.serveySave').show();
+					});
+
 				}
 			}
 		});
+	})
+
+	$(document).on('click','.clipBoardCopy',function(){
+			window.clipboardData.setData("asd","asd");
+			var a='asdsad';
+			a.execCommand('copy')
+	})
+	$(document).on('click','.closeCopy',function(){
+			$('.layer').hide();
+			$('.load').hide(function(){
+				$('button.btn.btn-default.serveySave').show();
+			});
 	})
 
 	$("#optionadd").hover(function(){
@@ -71,26 +101,12 @@ $('document').ready(function(htmldata){
 			addOptionCount++;
 		}
 	});
-	$("#optiondell").hover(function(){
-		if(!delOptionCount){
-			$("tip").append($("#delOptionTip").html());
-			$("tip").fadeOut(5000);
-			delOptionCount++;
-		}
-	});
+
 	$("#contentadd").hover(function(){
 		if(!addContentCount){
 			$("tip").append($("#addContentTip").html());
 			$("tip").fadeOut(5000);
 			addContentCount++;
-		}
-	});
-
-	$("#contentdel").hover(function(){
-		if(!delContentCount){
-			$("tip").append($("#delContentTip").html());
-			$("tip").fadeOut(5000);
-			delContentCount++;
 		}
 	});
 
@@ -121,6 +137,7 @@ $('document').ready(function(htmldata){
 		//$(document).find('.active').removeClass();
 		$(".active").removeClass("active");
 		$(".contentTbody").append($('#contenttemplate').html());
+		$(".active").append($('#optiontemplate').html());
 	});
 
 	//삭제
@@ -128,6 +145,8 @@ $('document').ready(function(htmldata){
 		var data= $(this);
 		data.parents('table').remove();
 	})
+
+
 })
 
 function optionEdit(type){
@@ -137,5 +156,28 @@ function optionEdit(type){
 		$(".active").append($('#optiontemplate1').html());
 	}else if(type==="리커트척도"){
 		$(".active").append($('#optiontemplate2').html());
+	}
+}
+
+function copy_trackback(url,trb) {
+	var IE=(document.all)?true:false;
+	if (IE) {
+		if(confirm("이 설문 URL 주소압니다 클립보드에 복사하시겠습니까?"))
+		window.clipboardData.setData("Text", trb);
+	} else {
+		$('.layer p.ctxt.mb20').append(trb);
+
+		$('.layer').show();
+		window.clipboardData.setData("Text", url);
+		//temp = prompt("이 글의 트랙백 주소입니다. Ctrl+C를 눌러 클립보드로 복사하세요", trb);
+		if(temp){
+			$(location).attr('href',url);
+		}else{
+
+				$('.load').hide(function(){
+					$('button.btn.btn-default.serveySave').show();
+				});
+
+		}
 	}
 }
