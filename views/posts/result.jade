@@ -2,6 +2,7 @@ extends ../layout
 
 block content
   script(type='text/javascript', src='/javascripts/result.js')
+  script(type='text/javascript', src='/javascripts/resultToxlsConvert.js')
   .container
     h1.page-header #{survey[0].subject} 결과
     p
@@ -41,3 +42,4 @@ block content
 
 
     a.btn.btn-default.recieve(href="/posts") 목록
+    a.btn.btn-default.convert 엑셀로 결과 보기

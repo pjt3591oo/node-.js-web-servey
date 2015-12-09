@@ -10,8 +10,10 @@ var session = require('express-session');
 var routes = require('./routes/index');
 var posts = require('./routes/posts');
 var users = require('./routes/users');
+var search = require('./routes/search');
 var admin = require('./routes/admin');
 var video = require('./routes/video');
+
 var loginAuth = require('./routes/auth/loginAuth');
 var adminAuth = require('./routes/auth/adminAuth');
 var mongoose   = require('mongoose');
@@ -46,6 +48,9 @@ app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
 app.use('/', routes); //로그인 , 회원가입, 설문하기
 app.use('/posts',loginAuth.loginAuth, posts);  // 설문 작성부분
 app.use('/users', users); //로그인, 회원가입
+
+app.use('/search',search); //찾는 부분
+
 app.use('/video', video); //로그인, 회원가입
 app.use('/admin',loginAuth.loginAuth,adminAuth.adminAuth, admin); //관리자 권한 페이지, 로그인, 권한 검사후 접속
 

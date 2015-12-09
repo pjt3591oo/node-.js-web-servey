@@ -1,50 +1,52 @@
 $('document').ready(function (){
 
   $('.update').click(function(){
-    var psw = prompt("password를 입력하세요");
+    var password = prompt("password를 입력하세요");
     var id = $(this).data('id');
+    var email = $('.update').data('user');
 
-    alert(psw);
-
+  //  alert(email);
     $.ajax({
-      url:'/posts/pswcheck/'+id,
-      data:{psw:psw},
-      type:'get',
+      url:'/posts/update/'+id,
+      data:{password:password, email:email},
+      type:'post',
       dataType:'json',
       success:function(data){
-        if(data==="fail"){
-          alert('비밀번호고 일치하지 않습니다');
+        if(data.status===400){
+          alert(data.data);
         }else{
           alert(data);
-          var url ='/posts/'+id+'/edit';
-          $(location).attr('href',url);
         }
       }
     })
 
-  })
+  });
 
     $('.delete').click(function(){
-      var psw= prompt("password를 입력하세요");
+      var password= prompt("password를 입력하세요");
       var id = $(this).data('id');
+      var email = $('.update').data('user');
       var self = $(this);
-
+      //alert(data);
     $.ajax({
         url:'/posts/delete/'+id,
-        data:{psw:psw},
+        data:{password:password, email:email},
         type:'delete',
         dataType:'json',
         success:function(data){
+          if(data.status===200){
+            var $index = self.html("clicked: "+ event.target);
+            $index.parent("td").parent("tr").empty();
+            $('total').text($('total').text().split(' ')[0]-1+' posts');
 
-          var $index = self.html("clicked: "+ event.target);
-          $index.parent("td").parent("tr").empty();
-          $('total').text($('total').text().split(' ')[0]-1+' posts');
-
-          alert(data+'게시글이 삭제 되었습니다.');
+            alert(data.data);
+          }else if(data.status===400){
+            alert(data.data);
+          }
         }
       })
 
-    })
+    });
 
 
 })

@@ -5,6 +5,7 @@ var Questions = require('../models/question');
 var Options = require('../models/option');
 var Answers = require('../models/answer');
 
+var crypto = require('crypto');
 var LoopNext = require('loopnext');
 var router = express.Router();
 
@@ -67,13 +68,98 @@ router.post('/new', function(req, res, next) { // 설문 작성 페이지 전송
 });
 
 router.get('/search/:email',function(req,res,next){
-  console.log();
+
   Surveys.find({email:req.param('email')},function(err,data){
     console.log(data);
     var pagination={ "numPosts" :data.length};
     res.render('./posts/index', { posts: data, email : req.param('email'),  pagination : pagination, currentUser:'1' });
+  });
+})
+
+//삭제
+router.delete('/delete/:id',checkPassword,function(req,res,next){
+  /*
+  Surveys
+  Questions
+  */
+  var surveyId = req.param('id');
+  var questionId ;
+
+  Questions.find({surveyId:surveyId},function(err,question){
+    if(err){
+      return next(err);
+    }else{
+      questionId = question[0]._id;
+      console.log(questionId);
+      deleteData(res,surveyId, questionId, next);
+    }
   })
 })
+
+//수정
+router.post('/update/:id',checkPassword, function(req, res, next) {
+
+  Surveys.find({_id:req.param('id')},function(err,survey){
+    console.log(survey[0]._id);
+    Questions.find({surveyId:survey[0]._id},function(err,question){
+      result(req,survey,question,res,'updateview');
+    });
+  });
+
+});
+
+//데이터 제거
+function deleteData(res, surveyId, questionId){
+  Surveys.remove({_id:surveyId},function(err){
+    if(err){
+      return next(err);
+    }else{
+      Questions.remove({_id:questionId},function(err){
+        if(err){
+          return next(err);
+        }else{
+          Options.remove({_id:questionId},function(err){
+            if(err){
+              return next(err);
+            }else{
+              Answers.remove({_id:questionId},function(err){
+                if(err){
+                  return next(err);
+                }else{
+                  console.log('데이터가 정상적으로 제거 되었습니다.');
+                  res.json({status:200, data:'해당 설문이 삭제 되었습니다.'});
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+}
+
+function checkPassword(req,res,next){
+  var email = req.body.email;
+  var password = cryp(req.body.password,null);
+
+  Users.findOne({email:email},function(err,data){
+    if(err){
+      return next(err);
+    }
+    else if(data.password===password ){
+      next();
+    }else{
+      res.json({status:400, data:"비밀번호가 일치하지 않습니다."})
+    }
+  });
+}
+
+function cryp(data, options){
+  var s = crypto.createHash('sha1');
+        s.update(data);
+        data = s.digest('hex');
+        return data;
+}
 
 function answerResult(questionId, answer){
   var an = new Answers({
@@ -122,14 +208,32 @@ function result(req,survey, question,res, viewType){
           n.next();
         });
       });
+    }else if("updateview"===viewType){
+      Options.find({questionId:question[count]._id},function(err,option){
+        console.log('asd');
+        console.log(option);
+        op.push(option);
+        count++;
+        if(count>=question.length){
+          console.log('testtesttest');
+            updateview(req,res,survey, op, question);
+        }
+        n.next();
+      });
     }
   });
 }
 
-
+function updateview(req,res,survey, op, question){
+  console.log('설문 수정 페이지');
+  console.log(op);
+  console.log(question);
+  res.json('asd');
+  res.render('./posts/edit',{survey:survey, question:question, op:op,currentUser:req.cookies.user});
+}
 
 function serveyview(req,res,survey, op, question){
-  console.log('rrr');
+  console.log('설문 페이지');
   console.log(op);
   console.log(question);
   res.render('./posts/show',{survey:survey, question:question, op:op,currentUser:req.cookies.user});

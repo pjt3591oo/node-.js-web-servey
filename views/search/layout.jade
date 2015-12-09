@@ -1,0 +1,29 @@
+doctype html
+html(lang='ko')
+
+head
+  meta(charset='UTF-8')
+
+  link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap-theme.css')
+  link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.css')
+  link(rel='stylesheet', href='/bower_components/font-awesome/css/font-awesome.min.css')
+  link(rel='shortcut icon', href='http://blogpfthumb.phinf.naver.net/20150108_189/pjt3591oo_1420674831487anbDY_PNG/frog.png?type=w161')
+  link(rel='stylesheet', href='/stylesheets/style.css')
+  script(type='text/javascript', src='/javascripts/zclip.js')
+  script(type='text/javascript', src='/bower_components/jquery/dist/jquery.js')
+  script(type='text/javascript', src='/javascripts/search.js')
+  script(type='text/javascript', src='/bower_components/bootstrap/dist/js/bootstrap.js')
+  script(type='text/javascript', src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+
+  body
+    block top-nav
+      include ../includes/topnav
+    block hero-unit
+    if flashMessages
+      each texts, type in flashMessages
+        .container
+          .alert(class='alert-#{type}')
+            each msg in texts
+              p= msg
+
+    block content

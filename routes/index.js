@@ -78,19 +78,32 @@ function check(req,res,next){
   var password = cryp(req.body.password, null);
   console.log(password);
   Users.findOne({email:req.param('email'), password:password},function(err,data){
+
     if(err){
         res.json('err');
       return next(err);
     }else{
+
       data = data || "0";
       if(data==="0"){
-        res.json('해당 정보가 일치하지 않습니다.');
+
+        Users.findOne({email:req.param('email'), password:cryp(toString(req.body.password), null)},function(err,data){
+            data = data || "0";
+            if(data==="0"){
+              res.json('해당 정보가 일치하지 않습니다.');
+            }else{ //로그인 성공
+                res.cookie('user', req.param('email'));
+                next();
+            }
+        });
+
       }else if(data.emailAuth==="0"){
         res.json('이메일 인증을 하셔야 됩니다.');
       }else if(req.param('email').length===0){
         res.json('이메일을 입력하셔야 합니다.');
       }
       else{ //로그인 성공
+        console.log('tttt');
           res.cookie('user', req.param('email'));
 
           next();
