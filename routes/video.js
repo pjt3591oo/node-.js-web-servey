@@ -6,7 +6,7 @@ var util = require('util');
 
 
 router.get('/',function(req,res,next){
-  var path = '1.mp4'
+  var path = 'test.mp4'
   var stat = fs.statSync(path);
   var total = stat.size;
   console.log(req.headers.range);
